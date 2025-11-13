@@ -1,17 +1,21 @@
+//
+// ┌───────────────────────────────┐
+// │ 2704. To Be Or Not To Be.     │
+// └───────────────────────────────┘
 /**
  * @param {string} val
  * @return {Object}
  */
-const expect = (val: any) => {
+const expect = (val) => {
   return {
-    toBe: (compareVal: any) => {
+    toBe: (compareVal) => {
       if (val === compareVal) {
         return true;
       } else {
         throw Error("Not Equal");
       }
     },
-    notToBe: (compareVal: any) => {
+    notToBe: (compareVal) => {
       if (val !== compareVal) {
         return true;
       } else {
@@ -20,12 +24,13 @@ const expect = (val: any) => {
     },
   };
 };
-// const result = expect(5).toBe(5);
-// console.log(result);
+ const result = expect(5).toBe(5);
 
-/* ///////////////////////////////////////////////////////////// */
-
-var createCounter = function (init: any) {
+//
+// ┌───────────────────────────────┐
+// │ 2665. Counter II              │
+// └───────────────────────────────┘
+var createCounter = function (init) {
   const originalValue = init;
   let current = init || 0;
 
@@ -43,6 +48,10 @@ var createCounter = function (init: any) {
   };
 };
 
+ //
+ // ┌───────────────────────────────┐
+ // │ 2635. Apply Transform Over Each Element in Array │
+ // └───────────────────────────────┘
 var map = function (arr, fn) {
   const result = [];
   for (let i = 0; i < arr.length; i++) {
