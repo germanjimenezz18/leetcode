@@ -77,3 +77,44 @@ var compose = function(functions) {
 /* const fn = compose([x => x + 1, x => 2 * x])
  * fn(4) // 9 
  */
+
+
+
+
+// 2703. Return Length of Arguments Passed
+/**
+ * @param {...(null|boolean|number|string|Array|Object)} args
+ * @return {number}
+ */
+var argumentsLength = function(...args) {
+    return args.length
+};
+
+/**
+ * argumentsLength(1, 2, 3); // 3
+ */
+
+
+
+
+// 2666. Allow One Function Call
+/**
+ * @param {Function} fn
+ * @return {Function}
+ */
+var once = function(fn) {
+    let used = false
+    return function(...args){
+            if (used) return 
+            used = true
+           return fn(...args)
+    }
+};
+
+/**
+ * let fn = (a,b,c) => (a + b + c)
+ * let onceFn = once(fn)
+ *
+ * onceFn(1,2,3); // 6
+ * onceFn(2,3,6); // returns undefined without calling fn
+ */
