@@ -1,62 +1,76 @@
+/** biome-ignore-all lint/complexity/useArrowFunction: porque no  */
+
 // ┌───────────────────────────────────────────────┐
 // │ 2704. To Be Or Not To Be.                     │
 // └───────────────────────────────────────────────┘
 const expect = (val) => ({
-  toBe: (compareVal) => (val === compareVal ? true : (() => { throw Error("Not Equal") })()),
-  notToBe: (compareVal) => (val !== compareVal ? true : (() => { throw Error("Equal") })()),
+	toBe: (compareVal) =>
+		val === compareVal
+			? true
+			: (() => {
+					throw Error("Not Equal");
+				})(),
+	notToBe: (compareVal) =>
+		val !== compareVal
+			? true
+			: (() => {
+					throw Error("Equal");
+				})(),
 });
 /* const result = expect(5).toBe(5); */
-
 
 // ┌───────────────────────────────────────────────┐
 // │ 2665. Counter II                              │
 // └───────────────────────────────────────────────┘
-var createCounter = function (init) {
-  const originalValue = init;
-  let current = init || 0;
-  return {
-    increment: () => current++,
-    decrement: () => current--,
-    reset: () => (current = originalValue),
-  };
-};
-
+function createCounter(init) {
+	const originalValue = init;
+	let current = init || 0;
+	return {
+		increment: () => current++,
+		decrement: () => current--,
+		reset: () => {
+			current = originalValue;
+			return current;
+		},
+	};
+}
 
 // ┌───────────────────────────────────────────────┐
 // │ 2635. Apply Transform Over Each Element in Array │
 // └───────────────────────────────────────────────┘
-var map = function (arr, fn) {
-  const result = [];
-  for (let i = 0; i < arr.length; i++) result.push(fn(arr[i], i));
-  return result;
-};
-
+function map(arr, fn) {
+	const result = [];
+	for (let i = 0; i < arr.length; i++) result.push(fn(arr[i], i));
+	return result;
+}
 
 // ┌───────────────────────────────────────────────┐
 // │ 2634. Filter Elements from Array              │
 // └───────────────────────────────────────────────┘
-var filter = function (arr, fn) {
-  const filteredArray = [];
-  for (let i = 0; i < arr.length; i++) {
-    if (fn(arr[i], i)) filteredArray.push(arr[i]);
-  }
-  return filteredArray;
-};
+function filter(arr, fn) {
+	const filteredArray = [];
+	for (let i = 0; i < arr.length; i++) {
+		if (fn(arr[i], i)) filteredArray.push(arr[i]);
+	}
+	return filteredArray;
+}
 
 const filterFunctional = function (arr, fn) {
-  return arr.reduce((filtered, value, index) => fn(value, index) ? [...filtered, value] : filtered, []);
+	return arr.reduce(
+		(filtered, value, index) =>
+			fn(value, index) ? [filtered, value] : filtered,
+		[],
+	);
 };
-
 
 // ┌───────────────────────────────────────────────┐
 // │ 2626. Array Reduce Transformation             │
 // └───────────────────────────────────────────────┘
-var reduce = function (nums, fn, init) {
-  let res = init;
-  for (i = 0; i < nums.length; i++) res = fn(res, nums[i]);
-  return res;
-};
-
+function reduce(nums, fn, init) {
+	let res = init;
+	for (i = 0; i < nums.length; i++) res = fn(res, nums[i]);
+	return res;
+}
 
 // ┌───────────────────────────────────────────────┐
 // │ 2629. Function Composition   (Beats 92.82%)   │
@@ -65,21 +79,20 @@ var reduce = function (nums, fn, init) {
  * @param {Function[]} functions
  * @return {Function}
  */
-var compose = function(functions) {
-    return function(x) {
-      let value = x
-        for (let i = 0; i < functions.length; i++) {
-          fun = functions[functions.length - i - 1]
-          value = fun(value)
-        }
-        return value
-    }
-};
+function compose(functions) {
+	return function (x) {
+		let value = x;
+		for (let i = 0; i < functions.length; i++) {
+			fun = functions[functions.length - i - 1];
+			value = fun(value);
+		}
+		return value;
+	};
+}
 
 /* const fn = compose([x => x + 1, x => 2 * x])
- * fn(4) // 9 
+ * fn(4) // 9
  */
-
 
 // ┌───────────────────────────────────────────────┐
 // │ 2703. Return Length of Arguments Passed       │
@@ -88,14 +101,13 @@ var compose = function(functions) {
  * @param {...(null|boolean|number|string|Array|Object)} args
  * @return {number}
  */
-var argumentsLength = function(...args) {
-    return args.length
-};
+function argumentsLength(...args) {
+	return args.length;
+}
 
 /**
  * argumentsLength(1, 2, 3); // 3
  */
-
 
 // ┌───────────────────────────────────────────────┐
 // │ 2666. Allow One Function Call                 │
@@ -104,14 +116,14 @@ var argumentsLength = function(...args) {
  * @param {Function} fn
  * @return {Function}
  */
-var once = function(fn) {
-    let used = false
-    return function(...args){
-            if (used) return 
-            used = true
-           return fn(...args)
-    }
-};
+function once(fn) {
+	let used = false;
+	return function (...args) {
+		if (used) return;
+		used = true;
+		return fn(...args);
+	};
+}
 
 /**
  * let fn = (a,b,c) => (a + b + c)
@@ -121,7 +133,6 @@ var once = function(fn) {
  * onceFn(2,3,6); // returns undefined without calling fn
  */
 
-
 // ┌───────────────────────────────────────────────┐
 // │ 2623. Memoize (beats 90%)                     │
 // └───────────────────────────────────────────────┘
@@ -130,17 +141,17 @@ var once = function(fn) {
  * @return {Function}
  */
 function memoize(fn) {
-    const cache = new Map()  
-    return function(...args) {
-      const key = JSON.stringify(args)
-      if (cache.has(key)) return  cache.get(key)
-      let result = fn(...args)
-       cache.set(key, result)
-       return result
-    }
+	const cache = new Map();
+	return function (...args) {
+		const key = JSON.stringify(args);
+		if (cache.has(key)) return cache.get(key);
+		const result = fn(...args);
+		cache.set(key, result);
+		return result;
+	};
 }
 
-/** 
+/**
  * let callCount = 0;
  * const memoizedFn = memoize(function (a, b) {
  *	 callCount += 1;
@@ -148,9 +159,8 @@ function memoize(fn) {
  * })
  * memoizedFn(2, 3) // 5
  * memoizedFn(2, 3) // 5
- * console.log(callCount) // 1 
+ * console.log(callCount) // 1
  */
- 
 
 // ┌───────────────────────────────────────────────┐
 // │ 2723. Add Two Promises (beats 98.83% wtf)     │
@@ -160,17 +170,28 @@ function memoize(fn) {
  * @param {Promise} promise2
  * @return {Promise}
  */
-var addTwoPromises = async function(promise1, promise2) {
-  res1 = await promise1
-  res2 = await promise2
-  return res1 + res2
-};
+async function addTwoPromises(promise1, promise2) {
+	const res1 = await promise1;
+	const res2 = await promise2;
+	return res1 + res2;
+}
 
 /**
  * addTwoPromises(Promise.resolve(2), Promise.resolve(2))
  *   .then(console.log); // 4
  */
 
-
-
- 
+export {
+	/* export all  */
+	expect,
+	createCounter,
+	map,
+	filter,
+	filterFunctional,
+	reduce,
+	compose,
+	argumentsLength,
+	once,
+	memoize,
+	addTwoPromises,
+};
