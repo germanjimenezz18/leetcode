@@ -5,10 +5,11 @@ const expect = (val) => ({
   toBe: (compareVal) => (val === compareVal ? true : (() => { throw Error("Not Equal") })()),
   notToBe: (compareVal) => (val !== compareVal ? true : (() => { throw Error("Equal") })()),
 });
-const result = expect(5).toBe(5);
+/* const result = expect(5).toBe(5); */
+
 
 // ┌───────────────────────────────────────────────┐
-// │ 2665. Counter II                               │
+// │ 2665. Counter II                              │
 // └───────────────────────────────────────────────┘
 var createCounter = function (init) {
   const originalValue = init;
@@ -20,6 +21,7 @@ var createCounter = function (init) {
   };
 };
 
+
 // ┌───────────────────────────────────────────────┐
 // │ 2635. Apply Transform Over Each Element in Array │
 // └───────────────────────────────────────────────┘
@@ -29,8 +31,9 @@ var map = function (arr, fn) {
   return result;
 };
 
+
 // ┌───────────────────────────────────────────────┐
-// │ 2634. Filter Elements from Array               │
+// │ 2634. Filter Elements from Array              │
 // └───────────────────────────────────────────────┘
 var filter = function (arr, fn) {
   const filteredArray = [];
@@ -44,6 +47,7 @@ const filterFunctional = function (arr, fn) {
   return arr.reduce((filtered, value, index) => fn(value, index) ? [...filtered, value] : filtered, []);
 };
 
+
 // ┌───────────────────────────────────────────────┐
 // │ 2626. Array Reduce Transformation             │
 // └───────────────────────────────────────────────┘
@@ -54,10 +58,9 @@ var reduce = function (nums, fn, init) {
 };
 
 
-
-//262z9. Function Composition
-// 48ms Beats 92.82%
-
+// ┌───────────────────────────────────────────────┐
+// │ 2629. Function Composition   (Beats 92.82%)   │
+// └───────────────────────────────────────────────┘
 /**
  * @param {Function[]} functions
  * @return {Function}
@@ -73,15 +76,14 @@ var compose = function(functions) {
     }
 };
 
-
 /* const fn = compose([x => x + 1, x => 2 * x])
  * fn(4) // 9 
  */
 
 
-
-
-// 2703. Return Length of Arguments Passed
+// ┌───────────────────────────────────────────────┐
+// │ 2703. Return Length of Arguments Passed       │
+// └───────────────────────────────────────────────┘
 /**
  * @param {...(null|boolean|number|string|Array|Object)} args
  * @return {number}
@@ -95,9 +97,9 @@ var argumentsLength = function(...args) {
  */
 
 
-
-
-// 2666. Allow One Function Call
+// ┌───────────────────────────────────────────────┐
+// │ 2666. Allow One Function Call                 │
+// └───────────────────────────────────────────────┘
 /**
  * @param {Function} fn
  * @return {Function}
@@ -118,3 +120,57 @@ var once = function(fn) {
  * onceFn(1,2,3); // 6
  * onceFn(2,3,6); // returns undefined without calling fn
  */
+
+
+// ┌───────────────────────────────────────────────┐
+// │ 2623. Memoize (beats 90%)                     │
+// └───────────────────────────────────────────────┘
+/**
+ * @param {Function} fn
+ * @return {Function}
+ */
+function memoize(fn) {
+    const cache = new Map()  
+    return function(...args) {
+      const key = JSON.stringify(args)
+      if (cache.has(key)) return  cache.get(key)
+      let result = fn(...args)
+       cache.set(key, result)
+       return result
+    }
+}
+
+/** 
+ * let callCount = 0;
+ * const memoizedFn = memoize(function (a, b) {
+ *	 callCount += 1;
+ *   return a + b;
+ * })
+ * memoizedFn(2, 3) // 5
+ * memoizedFn(2, 3) // 5
+ * console.log(callCount) // 1 
+ */
+ 
+
+// ┌───────────────────────────────────────────────┐
+// │ 2723. Add Two Promises (beats 98.83% wtf)     │
+// └───────────────────────────────────────────────┘
+/**
+ * @param {Promise} promise1
+ * @param {Promise} promise2
+ * @return {Promise}
+ */
+var addTwoPromises = async function(promise1, promise2) {
+  res1 = await promise1
+  res2 = await promise2
+  return res1 + res2
+};
+
+/**
+ * addTwoPromises(Promise.resolve(2), Promise.resolve(2))
+ *   .then(console.log); // 4
+ */
+
+
+
+ 
