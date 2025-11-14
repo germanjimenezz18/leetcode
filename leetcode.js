@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/complexity/useArrowFunction: porque no  */
-
 // ┌───────────────────────────────────────────────┐
 // │ 2704. To Be Or Not To Be.                     │
 // └───────────────────────────────────────────────┘
@@ -55,13 +53,12 @@ function filter(arr, fn) {
 	return filteredArray;
 }
 
-const filterFunctional = function (arr, fn) {
-	return arr.reduce(
+const filterFunctional = (arr, fn) =>
+	arr.reduce(
 		(filtered, value, index) =>
 			fn(value, index) ? [filtered, value] : filtered,
 		[],
 	);
-};
 
 // ┌───────────────────────────────────────────────┐
 // │ 2626. Array Reduce Transformation             │
@@ -80,7 +77,7 @@ function reduce(nums, fn, init) {
  * @return {Function}
  */
 function compose(functions) {
-	return function (x) {
+	return (x) => {
 		let value = x;
 		for (let i = 0; i < functions.length; i++) {
 			fun = functions[functions.length - i - 1];
@@ -118,7 +115,7 @@ function argumentsLength(...args) {
  */
 function once(fn) {
 	let used = false;
-	return function (...args) {
+	return (...args) => {
 		if (used) return;
 		used = true;
 		return fn(...args);
@@ -142,7 +139,7 @@ function once(fn) {
  */
 function memoize(fn) {
 	const cache = new Map();
-	return function (...args) {
+	return (...args) => {
 		const key = JSON.stringify(args);
 		if (cache.has(key)) return cache.get(key);
 		const result = fn(...args);
@@ -163,7 +160,7 @@ function memoize(fn) {
  */
 
 // ┌───────────────────────────────────────────────┐
-// │ 2723. Add Two Promises (beats 98.83% wtf)     │
+// │ 2723. Add Two Promises (beats 98.83% wtf??)   │
 // └───────────────────────────────────────────────┘
 /**
  * @param {Promise} promise1
@@ -180,18 +177,3 @@ async function addTwoPromises(promise1, promise2) {
  * addTwoPromises(Promise.resolve(2), Promise.resolve(2))
  *   .then(console.log); // 4
  */
-
-export {
-	/* export all  */
-	expect,
-	createCounter,
-	map,
-	filter,
-	filterFunctional,
-	reduce,
-	compose,
-	argumentsLength,
-	once,
-	memoize,
-	addTwoPromises,
-};
