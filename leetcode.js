@@ -237,3 +237,111 @@ function cancellable(fn, args, t) {
  *      console.log(result); // [{"time":20,"returned":10}]
  *  }, maxT + 15)
  */
+
+// ┌───────────────────────────────────────────────┐
+// │ 2725. Interval Cancellation 				   │
+// └───────────────────────────────────────────────┘
+/**
+ * @param {Function} fn
+ * @param {Array} args
+ * @param {number} t
+ * @return {Function}
+ */
+var cancellable = function (fn, args, t) {
+	fn(...args);
+
+	const intervalId = setInterval(() => {
+		fn(...args);
+	}, t);
+
+	return () => clearInterval(intervalId);
+};
+
+/**
+ * Use Cases:
+ * 	- Auto-Saving in Editing Applications
+ * 	- Animation and Slideshow Timings:
+ *  - Time based reminders
+ *
+ *  const result = [];
+ *
+ *  const fn = (x) => x * 2;
+ *  const args = [4], t = 35, cancelTimeMs = 190;
+ *
+ *  const start = performance.now();
+ *
+ *  const log = (...argsArr) => {
+ *      const diff = Math.floor(performance.now() - start);
+ *      result.push({"time": diff, "returned": fn(...argsArr)});
+ *  }
+ *
+ *  const cancel = cancellable(log, args, t);
+ *
+ *  setTimeout(cancel, cancelTimeMs);
+ *
+ *  setTimeout(() => {
+ *      console.log(result); // [
+ *                           //     {"time":0,"returned":8},
+ *                           //     {"time":35,"returned":8},
+ *                           //     {"time":70,"returned":8},
+ *                           //     {"time":105,"returned":8},
+ *                           //     {"time":140,"returned":8},
+ *                           //     {"time":175,"returned":8}
+ *                           // ]
+ *  }, cancelTimeMs + t + 15)
+ */
+
+// ┌───────────────────────────────────────────────┐
+// │ 2637. Promise Time Limit 				       │
+// └───────────────────────────────────────────────┘
+/**
+ * @param {Function} fn
+ * @param {number} t
+ * @return {Function}
+ */
+var timeLimit = function (fn, t) {
+	return async function (...args) {
+		return new Promise((resolve, reject) => {
+			const timeoutId = setTimeout(() => {
+				reject("Time Limit Exceeded");
+			}, t);
+			fn(...args).then(resolve, reject);
+		});
+	};
+};
+
+/**
+ * const limited = timeLimit((t) => new Promise(res => setTimeout(res, t)), 100);
+ * limited(150).catch(console.log) // "c" at t=100ms
+ */
+
+// ┌───────────────────────────────────────────────┐
+// │ 2622. Cache With Time Limit  			       │
+// └───────────────────────────────────────────────┘
+var TimeLimitedCache = function () {};
+
+/**
+ * @param {number} key
+ * @param {number} value
+ * @param {number} duration time until expiration in ms
+ * @return {boolean} if un-expired key already existed
+ */
+TimeLimitedCache.prototype.set = function (key, value, duration) {};
+
+/**
+ * @param {number} key
+ * @return {number} value associated with key
+ */
+TimeLimitedCache.prototype.get = function (key) {};
+
+/**
+ * @return {number} count of non-expired keys
+ */
+TimeLimitedCache.prototype.count = function () {};
+
+/**
+ * const timeLimitedCache = new TimeLimitedCache()
+ * timeLimitedCache.set(1, 42, 1000); // false
+ * timeLimitedCache.get(1) // 42
+ * timeLimitedCache.count() // 1
+ */
