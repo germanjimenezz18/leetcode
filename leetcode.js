@@ -209,7 +209,7 @@ function cancellable(fn, args, t) {
 		fn(...args);
 	}, t);
 
-	return function () {
+	return () => {
 		return clearTimeout(timeoutId);
 	};
 }
@@ -247,7 +247,7 @@ function cancellable(fn, args, t) {
  * @param {number} t
  * @return {Function}
  */
-var cancellable = function (fn, args, t) {
+var cancellableIntervallable = function (fn, args, t) {
 	fn(...args);
 
 	const intervalId = setInterval(() => {
@@ -275,7 +275,7 @@ var cancellable = function (fn, args, t) {
  *      result.push({"time": diff, "returned": fn(...argsArr)});
  *  }
  *
- *  const cancel = cancellable(log, args, t);
+ *  const cancel = cancellableInterval(log, args, t);
  *
  *  setTimeout(cancel, cancelTimeMs);
  *
@@ -300,9 +300,9 @@ var cancellable = function (fn, args, t) {
  * @return {Function}
  */
 var timeLimit = function (fn, t) {
-	return async function (...args) {
+	return async (...args) => {
 		return new Promise((resolve, reject) => {
-			const timeoutId = setTimeout(() => {
+			setTimeout(() => {
 				reject("Time Limit Exceeded");
 			}, t);
 			fn(...args).then(resolve, reject);
@@ -330,7 +330,7 @@ var TimeLimitedCache = function () {
  * @return {boolean} if un-expired key already existed
  */
 TimeLimitedCache.prototype.set = function (key, value, duration) {
-	let found = this.cache.has(key);
+	const found = this.cache.has(key);
 	if (found) clearTimeout(this.cache.get(key).ref);
 
 	this.cache.set(key, {
@@ -373,7 +373,7 @@ TimeLimitedCache.prototype.count = function () {
  */
 var debounce = function (fn, t) {
 	let timer = null;
-	return function (...args) {
+	return (...args) => {
 		if (timer) clearTimeout(timer);
 		timer = setTimeout(() => fn(...args), t);
 	};
@@ -384,4 +384,36 @@ var debounce = function (fn, t) {
  * log('Hello'); // cancelled
  * log('Hello'); // cancelled
  * log('Hello'); // Logged at t=100ms
+ */
+
+// ┌───────────────────────────────────────────────┐
+// │ 2677. Chunk Array                            │
+// └───────────────────────────────────────────────┘
+
+/**
+ * @param {Array} arr
+ * @param {number} size
+ * @return {Array}
+ */
+const chunk = (arr, size) => {
+	const chunked = [];
+	for (let i = 0; i < arr.length; i += size) {
+		chunked.push(arr.slice(i, i + size));
+	}
+	return chunked;
+};
+
+// ┌───────────────────────────────────────────────┐
+// │ 2619. Array Prototype Last                    │
+// └───────────────────────────────────────────────┘
+/**
+ * @return {null|boolean|number|string|Array|Object}
+ */
+Array.prototype.last = function () {
+	return this.length ? this[this.length - 1] : -1;
+};
+
+/**
+ * const arr = [1, 2, 3];
+ * arr.last(); // 3
  */
