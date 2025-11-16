@@ -417,3 +417,31 @@ Array.prototype.last = function () {
  * const arr = [1, 2, 3];
  * arr.last(); // 3
  */
+
+// ┌───────────────────────────────────────────────┐
+// │ 2631. Group By (beats 88%)                   │
+// └───────────────────────────────────────────────┘
+/**
+ * @param {Function} fn
+ * @return {Object}
+ */
+Array.prototype.groupBy = function (fn) {
+	const res = {};
+	this.forEach((val, index) => {
+		const key = fn(this[index]);
+		if (!res[key]) {
+			res[key] = [];
+		}
+		res[key].push(val);
+	});
+	return res;
+};
+
+/* V2 with object.groupBy (faster) */
+Array.prototype.groupByFunc = function (fn) {
+	return Object.groupBy(this, (val) => fn(val));
+};
+
+/**
+ * [1,2,3].groupBy(String) // {"1":[1],"2":[2],"3":[3]}
+ */
